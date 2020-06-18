@@ -1,4 +1,6 @@
 import { onMounted } from 'vue';
+import router from '../router';
+import cdn from './cdn';
 
 export function createEditor(id, options, callback) {
   const { ace } = window;
@@ -16,20 +18,22 @@ export function setTimer(ms) {
   };
 }
 
-export function createIframe(store, iframe) {
-  const sass = window.Sass;
+export function setIframe(store, iframe) {
+  const routes = router.currentRoute.value;
+  let { use } = routes.query;
+  use = use.split(',');
+  const plugins = use.reduce((t, c) => t + cdn[c], '');
   const { html, scss, js } = store.state.normalEditContent;
+  const sass = window.Sass;
   sass.compile(scss, function(css) {
     const data = `
       <head>
-        <style>${css.text && css.text.replace(/[\n|\s]/g, '')}</style>
+        ${plugins}
+        <style>${css.text && css.text.replace(/[\n]/g, '')}</style>
       </head>
       <body>
         ${html}
-
-        <script>
-        ${js}
-        </script>
+        <script>${js}</script>
       </body>
     `;
     iframe.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(data);
@@ -63,4 +67,8 @@ export function widthObserver(editor) {
   observer.observe(editor.container, {
     attributes: true,
   });
+}
+
+export function getEditorSetting() {
+  return localStorage['jw-editor-store'] && JSON.parse(localStorage['jw-editor-store']);
 }

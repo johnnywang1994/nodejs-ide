@@ -9,7 +9,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import { createIframe } from '../../plugin/utils';
+import { setIframe } from '../../plugin/utils';
 
 export default {
   setup() {
@@ -17,7 +17,7 @@ export default {
     const normalResultRef = ref(null);
 
     onMounted(() => {
-      createIframe(store, normalResultRef.value)
+      setIframe(store, normalResultRef.value)
     });
 
     return { store: store.state, normalResultRef };

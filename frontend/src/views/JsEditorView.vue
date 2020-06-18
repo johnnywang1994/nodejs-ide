@@ -1,13 +1,19 @@
 <template>
   <div id="js-editor-view">
-    <js-navbar />  
-    <js-editor :style="store.editorSetting" />
+    <tool-menu>
+      <transition name="jump-up">
+        <js-navbar v-show="store.LS.editorSetting.openMenu" />
+      </transition>
+    </tool-menu>
+    
+    <js-editor :style="store.LS.editorSetting" />
     <result />
   </div>
 </template>
 
 <script>
 import { useStore } from 'vuex';
+import ToolMenu from '../components/ToolMenu.vue';
 import JsNavbar from '../components/JsEditor/Navbar.vue';
 import JsEditor from '../components/JsEditor/Editor.vue'
 import Result from '../components/JsEditor/Result.vue'
@@ -15,6 +21,7 @@ import Result from '../components/JsEditor/Result.vue'
 export default {
   name: 'JsEditorView',
   components: {
+    ToolMenu,
     JsNavbar,
     JsEditor,
     Result,

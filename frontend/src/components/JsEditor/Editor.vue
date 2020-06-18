@@ -3,7 +3,7 @@
     <div
       id="js-editor"
       class="editor"
-      v-show="store.editorSetting.openEditor"
+      v-show="store.LS.editorSetting.openEditor"
     ></div>
   </transition>
 </template>
@@ -13,7 +13,7 @@ import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { useActions } from '../../store';
 import consoleHook from '../../plugin/logHook';
-import { createEditor, setTimer } from '../../plugin/utils';
+import { createEditor, setTimer, getEditorSetting } from '../../plugin/utils';
 
 export default {
   name: 'JsEditor',
@@ -42,6 +42,7 @@ export default {
 
       // init value
       editor.setValue(content);
+      editor.session.setTabSize(getEditorSetting().tabSize);
       editJsContent(content);
 
       // listen change

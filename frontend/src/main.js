@@ -2,8 +2,24 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import store from './store'
 import router from './router'
-import './global.scss'
+import LocalStore from './plugin/localStore'
+import './styles/global.scss'
 
-const app = createApp(App);
+const localStoreConfig = {
+  store,
+  moduleName: 'LS',
+  userKey: 'jw-editor-store',
+  stateKey: 'editorSetting',
+  state: {
+    fontSize: '15px',
+    tabSize: 4,
+    openEditor: true,
+    openMenu: true,
+  },
+}
 
-app.use(store).use(router).mount('#app');
+createApp(App)
+  .use(store)
+  .use(LocalStore, localStoreConfig)
+  .use(router)
+  .mount('#app');

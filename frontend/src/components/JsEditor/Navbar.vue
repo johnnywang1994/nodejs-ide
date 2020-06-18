@@ -2,10 +2,10 @@
   <div class="js-navbar">
     <!-- Toggle -->
     <li
-      :class="{ active: store.editorSetting.openEditor }"
+      :class="{ active: store.LS.editorSetting.openEditor }"
       @click="onToggleEditor"
     >
-      <span class="material-icons" v-if="store.editorSetting.openEditor">
+      <span class="material-icons" v-if="store.LS.editorSetting.openEditor">
         toggle_off
       </span>
       <span class="material-icons" v-else>toggle_on</span>
@@ -30,7 +30,7 @@
     <!-- Tab-size -->
     <li @click="onChangeTabSize">
       <span class="material-icons">sync_alt</span>
-      {{ store.editorSetting.tabSize }}
+      {{ store.LS.editorSetting.tabSize }}
     </li>
 
     <!-- Download -->
@@ -51,14 +51,14 @@ export default {
   name: 'JsNavbar',
   setup() {
     const store = useStore();
-    const { updateEditorSetting } = useActions(store);
+    const { editLocalStorage } = useActions(store);
     const fullscreenRef = ref(false);
 
     const onToggleEditor = () => {
-      const setting = store.state.editorSetting;
-      updateEditorSetting({
-        ...setting,
-        openEditor: !setting.openEditor,
+      const setting = store.state.LS.editorSetting;
+      editLocalStorage({
+        key: 'openEditor',
+        value: !setting.openEditor,
       })
     }
 
@@ -75,10 +75,10 @@ export default {
     };
 
     const onChangeFontSize = (size) => {
-      const setting = store.state.editorSetting;
-      updateEditorSetting({
-        ...setting,
-        fontSize: parseFloat(setting.fontSize) + size + 'px',
+      const setting = store.state.LS.editorSetting;
+      editLocalStorage({
+        key: 'fontSize',
+        value: parseFloat(setting.fontSize) + size + 'px',
       });
     };
 
@@ -87,12 +87,13 @@ export default {
     };
 
     const onChangeTabSize = () => {
-      const { editors, editorSetting } = store.state;
+      const { editors } = store.state;
+      const { editorSetting } = store.state.LS;
       const nowTabSize = editorSetting.tabSize;
       const targetTabSize = nowTabSize === 4 ? 2 : 4;
-      updateEditorSetting({
-        ...editorSetting,
-        tabSize: targetTabSize,
+      editLocalStorage({
+        key: 'tabSize',
+        value: targetTabSize,
       });
 
       Object.keys(editors).forEach(key => {
@@ -119,11 +120,11 @@ export default {
 .js-navbar {
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: 100%;
   width: 30%;
   min-width: 300px;
   display: flex;
-  z-index: 10;
+  animation-duration: 0.3s;
   li {
     display: block;
     list-style: none;

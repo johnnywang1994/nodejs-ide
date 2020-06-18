@@ -8,8 +8,9 @@ import { useActions } from '../../store';
 import {
   createEditor,
   setTimer,
-  createIframe,
+  setIframe,
   widthObserver,
+  getEditorSetting,
 } from '../../plugin/utils';
 
 export default {
@@ -32,6 +33,7 @@ export default {
 
       // init content
       editor.setValue(content);
+      editor.session.setTabSize(getEditorSetting().tabSize);
       editNormalContent({
         key: 'html',
         value: editor.getValue(),
@@ -44,7 +46,7 @@ export default {
           value: editor.getValue(),
         });
         withTimer(() => {
-          createIframe(
+          setIframe(
             store,
             document.getElementById('normal-result'),
           );
