@@ -1,0 +1,14 @@
+{
+  "name": "nodejs-ide",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon ./server/index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "connect-history-api-fallback": "^1.6.0",
+    "nodemon": "^1.19.4"
+  }
+}
