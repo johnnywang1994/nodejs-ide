@@ -21,7 +21,7 @@ export function setTimer(ms) {
 export function setIframe(store, iframe) {
   const routes = router.currentRoute.value;
   let { use } = routes.query;
-  use = use.split(',');
+  use = use ? use.split(',') : [];
   const plugins = use.reduce((t, c) => t + cdn[c], '');
   const { html, scss, js } = store.state.normalEditContent;
   const sass = window.Sass;
